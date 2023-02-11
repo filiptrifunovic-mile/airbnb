@@ -6,8 +6,10 @@ import Layout from "./Layout";
 import RegisterPage from "./pages/Register";
 import axios from "axios";
 import { UserContextProvider } from "./UserContext";
+import { useEffect } from "react";
 
 axios.defaults.baseURL = "http://localhost:4000";
+axios.defaults.withCredentials = true;
 
 function App() {
   return (
