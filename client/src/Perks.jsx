@@ -1,10 +1,21 @@
 const Perks = ({ selected, onChange }) => {
+  function handleCheckbox(e) {
+    const { checked, name } = e.target;
+
+    if (checked) {
+      onChange([...selected, name]);
+    } else {
+      onChange([...selected.filter((selectedName) => selectedName !== name)]);
+    }
+  }
+
   return (
     <>
       <label
         htmlFor=""
         className="border p-4 flex rounded-2xl gap-2 items-center"
       >
+        <input type="checkbox" name="wifi" onChange={handleCheckbox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -20,14 +31,13 @@ const Perks = ({ selected, onChange }) => {
           />
         </svg>
 
-        <input type="checkbox" />
         <span>WiFi</span>
       </label>
       <label
         htmlFor=""
         className="border flex rounded-2xl p-4 gap-2 items-center"
       >
-        <input type="checkbox" />
+        <input type="checkbox" name="parking" onChange={handleCheckbox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -49,7 +59,7 @@ const Perks = ({ selected, onChange }) => {
         htmlFor=""
         className="border flex rounded-2xl p-4 gap-2 items-center"
       >
-        <input type="checkbox" />
+        <input type="checkbox" name="tv" onChange={handleCheckbox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -71,7 +81,7 @@ const Perks = ({ selected, onChange }) => {
         htmlFor=""
         className="border flex rounded-2xl p-4 gap-2 items-center"
       >
-        <input type="checkbox" />
+        <input type="checkbox" name="pets" onChange={handleCheckbox} />
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
