@@ -126,7 +126,7 @@ app.post("/places", (req, res) => {
 
   const {
     title,
-    adress,
+    address,
     addedPhotos,
     description,
     perks,
@@ -134,6 +134,7 @@ app.post("/places", (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
+    price,
   } = req.body;
 
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -142,7 +143,7 @@ app.post("/places", (req, res) => {
     const placeDoc = await Place.create({
       owner: userData.id,
       title,
-      adress,
+      address,
       photos: addedPhotos,
       description,
       perks,
@@ -150,12 +151,13 @@ app.post("/places", (req, res) => {
       checkIn,
       checkOut,
       maxGuests,
+      price,
     });
     res.json(placeDoc);
   });
 });
 
-app.get("/places", (req, res) => {
+app.get("/user-places", (req, res) => {
   const { token } = req.cookies;
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
     const { id } = userData;
@@ -174,7 +176,7 @@ app.put("/places", async (req, res) => {
   const {
     id,
     title,
-    adress,
+    address,
     addedPhotos,
     description,
     perks,
@@ -182,6 +184,7 @@ app.put("/places", async (req, res) => {
     checkIn,
     checkOut,
     maxGuests,
+    price,
   } = req.body;
 
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
@@ -191,7 +194,7 @@ app.put("/places", async (req, res) => {
     if (userData.id === placeDoc.owner.toString()) {
       placeDoc.set({
         title,
-        adress,
+        address,
         photos: addedPhotos,
         description,
         perks,
@@ -199,11 +202,16 @@ app.put("/places", async (req, res) => {
         checkIn,
         checkOut,
         maxGuests,
+        price,
       });
       await placeDoc.save();
       res.json("ok");
     }
   });
+});
+
+app.get("/places", async (req, res) => {
+  res.json(await Place.find());
 });
 
 app.listen(4000);
