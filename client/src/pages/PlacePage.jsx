@@ -5,6 +5,7 @@ import { Link, useParams } from "react-router-dom";
 const PlacePage = () => {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
+  const [showAllPhotos, setShowAllPhotos] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -15,6 +16,44 @@ const PlacePage = () => {
   }, [id]);
 
   if (!place) return "";
+
+  if (showAllPhotos) {
+    return (
+      <div className="absolute inset-0 bg-white min-h-screen">
+        <div className="p-8 grid gap-4">
+          <div>
+            <h2 className="text-3xl">Photos of {place.title}</h2>
+            <button
+              className="fixed bottom-10 flex gap-2  py-2 px-4 bg-white rounded-2xl shadow-md shadow-gray-500"
+              onClick={() => setShowAllPhotos(false)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+              Close photos
+            </button>
+          </div>
+          {place?.photos?.length > 0 &&
+            place.photos.map((photo) => (
+              <div>
+                <img src={"http://localhost:4000/uploads/" + photo} alt="" />
+              </div>
+            ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mt-4 bg-gray-100 -mx-8 px-8 py-8">
@@ -49,7 +88,7 @@ const PlacePage = () => {
         </a>
       </div>
       <div className="relative">
-        <div className="grid gap-2 grid-cols-[2fr_1fr]">
+        <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden">
           <div>
             {place.photos?.[0] && (
               <div>
@@ -80,7 +119,10 @@ const PlacePage = () => {
             )}
           </div>
         </div>
-        <button className="flex gap-2 absolute bottom-2 right-2 py-2 px-4 bg-white rounded-2xl shadow-md shadow-gray-500">
+        <button
+          className="flex gap-2 absolute bottom-2 right-2 py-2 px-4 bg-white rounded-2xl shadow-md shadow-gray-500"
+          onClick={() => setShowAllPhotos(true)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -97,6 +139,46 @@ const PlacePage = () => {
           </svg>
           Show more photos
         </button>
+      </div>
+
+      <div className="mt-8 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
+        <div>
+          <div className="my-4">
+            <h2 className="font-semibold text-2xl">Description</h2>
+            {place.description}
+          </div>
+          <b>Check in:</b> {place.checkIn}h <br />
+          <b>Check Out:</b> {place.checkOut}h <br />
+          <b>Max number of guests:</b> {place.maxGuests} <br />
+        </div>
+        <div>
+          <div className="bg-gray-200 p-4 rounded-2xl shadow">
+            <div className="text-2xl text-center">
+              Price: {place.price} € / per night
+            </div>
+            <div className="border py-4 px-4 rounded-2xl">
+              <label>Check in:</label> <br />
+              <input type="date" />
+            </div>
+            <div className="border py-4 px-4 rounded-2xl">
+              <label>Check out:</label> <br />
+              <input type="date" />
+            </div>
+            <div className="border py-4 px-4 rounded-2xl w-28">
+              <label>Nymber of guests:</label> <br />
+              <input type="number" placeholder="1" />
+            </div>
+            <button className="primary">Book this place</button>
+          </div>
+        </div>
+      </div>
+      <div className="bg-white mt-8 px-8 py-8">
+        <div>
+          <h2 className="font-semibold text-2xl">Extra info</h2>
+        </div>
+        <div className="text-sm text-gray-700 leading-5 mb-4 mt-2">
+          {place.extraInfo}
+        </div>
       </div>
     </div>
   );

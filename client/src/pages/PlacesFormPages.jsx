@@ -16,7 +16,7 @@ const PlacesFormPages = () => {
   const [extraInfo, setExtraInfo] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
-  const [maxGuest, setMaxGuest] = useState(1);
+  const [maxGuests, setMaxGuests] = useState(1);
   const [redirect, setRedirect] = useState(false);
   const [price, setPrice] = useState(100);
 
@@ -33,7 +33,7 @@ const PlacesFormPages = () => {
       setExtraInfo(data.extraInfo);
       setCheckIn(data.checkIn);
       setCheckOut(data.checkOut);
-      setMaxGuest(data.maxGuest);
+      setMaxGuests(data.maxGuests);
       setPrice(data.price);
     });
   }, [id]);
@@ -67,7 +67,7 @@ const PlacesFormPages = () => {
       extraInfo,
       checkIn,
       checkOut,
-      maxGuest,
+      maxGuests,
       price,
     };
 
@@ -162,8 +162,8 @@ const PlacesFormPages = () => {
 
             <input
               type="number"
-              value={maxGuest}
-              onChange={(e) => setMaxGuest(e.target.value)}
+              value={maxGuests}
+              onChange={(e) => setMaxGuests(e.target.value)}
             />
           </div>
           <div>
