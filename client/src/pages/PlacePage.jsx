@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import { differenceInCalendarDays } from "date-fns";
 
 const PlacePage = () => {
@@ -12,15 +12,16 @@ const PlacePage = () => {
   const [numberOfGuests, setNumberOfGuests] = useState(1);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [redirect, setRedirect] = useState("");
 
   let numberOfDays = 0;
-
   if (checkIn && checkOut) {
     numberOfDays = differenceInCalendarDays(
       new Date(checkOut),
       new Date(checkIn)
     );
   }
+
   useEffect(() => {
     if (!id) return;
 
@@ -28,6 +29,24 @@ const PlacePage = () => {
       setPlace(response.data);
     });
   }, [id]);
+
+  async function bookThisPlace() {
+    const response = await axios.post("/bookings", {
+      checkIn,
+      checkOut,
+      numberOfGuests,
+      name,
+      email,
+      place: place._id,
+      price: numberOfDays * place.price,
+    });
+    const bookingId = response.data._id;
+    setRedirect(`/account/bookings/${bookingId}`);
+  }
+
+  if (redirect) {
+    return <Navigate to={redirect} />;
+  }
 
   if (!place) return "";
 
@@ -220,7 +239,7 @@ const PlacePage = () => {
                 </div>
               </>
             )}
-            <button className="primary">
+            <button className="primary" onClick={bookThisPlace}>
               Book this place
               {numberOfDays > 0 && <span> €{numberOfDays * place.price}</span>}
             </button>
