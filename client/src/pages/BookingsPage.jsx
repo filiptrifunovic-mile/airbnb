@@ -20,16 +20,13 @@ const BookingsPage = () => {
       <div className="">
         {bookings?.length > 0 &&
           bookings.map((booking) => (
-            <Link
-              to={`/account/bookings/${booking._id}`}
-              className="flex gap-4 bg-gray-200 rounded-2xl overflow-hidden mb-3 h-32"
-            >
+            <div className="flex gap-4 bg-gray-200 rounded-2xl overflow-hidden mb-3 idi2">
               <div className="w-48">
                 <PlaceImg place={booking.place} />
               </div>
-              <div className="py-3 pr-3 grow flex gap-2 flex-col">
+              <div className=" grow flex gap-2 flex-col">
                 <h2 className="text-xl font-bold">{booking.place.title}</h2>
-                <div className="border-t border-gray-300 -mt-2">
+                <div className=" -mt-2">
                   Date: {format(new Date(booking.checkIn), "dd-MM-yyyy")} until{" "}
                   {format(new Date(booking.checkOut), "dd-MM-yyyy")}
                 </div>
@@ -41,7 +38,7 @@ const BookingsPage = () => {
                   nights | Price: {booking.price} €
                 </div>
               </div>
-            </Link>
+            </div>
           ))}
       </div>
     </div>

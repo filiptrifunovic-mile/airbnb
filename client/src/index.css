@@ -22,3 +22,15 @@ button.primary {
   background-color: #ff385c;
   @apply bg-primary p-2 w-full text-white rounded-2xl;
 }
+
+@media only screen and (max-width: 600px) {
+  .idi {
+    flex-direction: column;
+  }
+
+  .idi2 {
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+}

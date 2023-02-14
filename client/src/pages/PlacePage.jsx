@@ -39,7 +39,8 @@ const PlacePage = () => {
     });
   }, [id]);
 
-  async function bookThisPlace() {
+  async function bookThisPlace(e) {
+    e.preventDefault();
     const response = await axios.post("/bookings", {
       checkIn,
       checkOut,
@@ -50,7 +51,7 @@ const PlacePage = () => {
       price: numberOfDays * place.price,
     });
     const bookingId = response.data._id;
-    setRedirect(`/account/bookings/${bookingId}`);
+    setRedirect(`/account/bookings`);
   }
 
   if (redirect) {
@@ -130,14 +131,14 @@ const PlacePage = () => {
         </a>
       </div>
       <div className="relative">
-        <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden">
-          <div>
+        <div className="grid gap-2 grid-cols-[4fr_1fr] rounded-2xl overflow-hidden ">
+          <div className="">
             {place.photos?.[0] && (
-              <div>
+              <div className="">
                 <img
                   src={"http://localhost:4000/uploads/" + place.photos?.[0]}
                   alt="photo"
-                  className="aspect-square object-cover"
+                  className="aspect-square object-cover w-full h-[600px]"
                 />
               </div>
             )}
@@ -147,7 +148,7 @@ const PlacePage = () => {
               <img
                 src={"http://localhost:4000/uploads/" + place.photos?.[1]}
                 alt="photo"
-                className="aspect-square object-cover"
+                className="aspect-square object-cover h-[300px]"
               />
             )}
             {place.photos?.[2] && (
@@ -155,7 +156,7 @@ const PlacePage = () => {
                 <img
                   src={"http://localhost:4000/uploads/" + place.photos?.[2]}
                   alt="photo"
-                  className="aspect-square object-cover relative top-2"
+                  className="aspect-square object-cover relative top-2 h-[300px]"
                 />
               </div>
             )}
@@ -183,7 +184,7 @@ const PlacePage = () => {
         </button>
       </div>
 
-      <div className="mt-8 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
+      <form className="mt-8 gap-8 grid grid-cols-1 md:grid-cols-[2fr_1fr]">
         <div>
           <div className="my-4">
             <h2 className="font-semibold text-2xl">Description</h2>
@@ -205,6 +206,7 @@ const PlacePage = () => {
                 type="date"
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
+                required
               />
             </div>
             <div className="border py-4 px-4 rounded-2xl ">
@@ -214,6 +216,7 @@ const PlacePage = () => {
                 type="date"
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
+                required
               />
             </div>
             <div className="border py-4 px-4 rounded-2xl w-44">
@@ -224,6 +227,7 @@ const PlacePage = () => {
                 placeholder="1"
                 value={numberOfGuests}
                 onChange={(e) => setNumberOfGuests(e.target.value)}
+                required
               />
             </div>
             {numberOfDays > 0 && (
@@ -235,11 +239,13 @@ const PlacePage = () => {
                     placeholder="John Doe"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="border py-4 px-4 rounded-2xl w-80">
                   <label>Your email adress:</label>
                   <input
+                    required
                     type="email"
                     placeholder="example@example.com"
                     value={email}
@@ -248,13 +254,33 @@ const PlacePage = () => {
                 </div>
               </>
             )}
-            <button className="primary" onClick={bookThisPlace}>
-              Book this place
-              {numberOfDays > 0 && <span> €{numberOfDays * place.price}</span>}
-            </button>
+            {email &&
+            name &&
+            numberOfGuests > 0 &&
+            checkIn.length > 0 &&
+            checkOut.length > 0 ? (
+              <button type="submit" className="primary" onClick={bookThisPlace}>
+                Book this place
+                {numberOfDays > 0 && (
+                  <span> €{numberOfDays * place.price}</span>
+                )}
+              </button>
+            ) : (
+              <button
+                type="submit"
+                className="bg-gray-400 p-2 w-full text-white rounded-2xl"
+                onClick={bookThisPlace}
+                disabled
+              >
+                Book this place
+                {numberOfDays > 0 && (
+                  <span> €{numberOfDays * place.price}</span>
+                )}
+              </button>
+            )}
           </div>
         </div>
-      </div>
+      </form>
       <div className="bg-white mt-8 px-8 py-8">
         <div>
           <h2 className="font-semibold text-2xl">Extra info</h2>
