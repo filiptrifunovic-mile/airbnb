@@ -10,6 +10,8 @@ const PlacePage = () => {
   const [checkIn, setCheckIn] = useState([]);
   const [checkOut, setCheckOut] = useState([]);
   const [numberOfGuests, setNumberOfGuests] = useState(1);
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   let numberOfDays = 0;
 
@@ -171,28 +173,53 @@ const PlacePage = () => {
             <div className="border py-4 px-4 rounded-2xl">
               <label>Check in:</label> <br />
               <input
+                className="p-2 rounded-2xl mt-2"
                 type="date"
                 value={checkIn}
                 onChange={(e) => setCheckIn(e.target.value)}
               />
             </div>
-            <div className="border py-4 px-4 rounded-2xl">
+            <div className="border py-4 px-4 rounded-2xl ">
               <label>Check out:</label> <br />
               <input
+                className="p-2 rounded-2xl mt-2"
                 type="date"
                 value={checkOut}
                 onChange={(e) => setCheckOut(e.target.value)}
               />
             </div>
-            <div className="border py-4 px-4 rounded-2xl w-28">
+            <div className="border py-4 px-4 rounded-2xl w-44">
               <label>Nymber of guests:</label> <br />
               <input
+                className="w-24"
                 type="number"
                 placeholder="1"
                 value={numberOfGuests}
                 onChange={(e) => setNumberOfGuests(e.target.value)}
               />
             </div>
+            {numberOfDays > 0 && (
+              <>
+                <div className="border py-4 px-4 rounded-2xl w-80">
+                  <label>Your full name:</label>
+                  <input
+                    type="text"
+                    placeholder="John Doe"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="border py-4 px-4 rounded-2xl w-80">
+                  <label>Your email adress:</label>
+                  <input
+                    type="email"
+                    placeholder="example@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </div>
+              </>
+            )}
             <button className="primary">
               Book this place
               {numberOfDays > 0 && <span> €{numberOfDays * place.price}</span>}
