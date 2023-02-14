@@ -1,12 +1,24 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
+import { differenceInCalendarDays } from "date-fns";
 
 const PlacePage = () => {
   const { id } = useParams();
   const [place, setPlace] = useState(null);
   const [showAllPhotos, setShowAllPhotos] = useState(false);
+  const [checkIn, setCheckIn] = useState([]);
+  const [checkOut, setCheckOut] = useState([]);
+  const [numberOfGuests, setNumberOfGuests] = useState(1);
 
+  let numberOfDays = 0;
+
+  if (checkIn && checkOut) {
+    numberOfDays = differenceInCalendarDays(
+      new Date(checkOut),
+      new Date(checkIn)
+    );
+  }
   useEffect(() => {
     if (!id) return;
 
@@ -158,17 +170,33 @@ const PlacePage = () => {
             </div>
             <div className="border py-4 px-4 rounded-2xl">
               <label>Check in:</label> <br />
-              <input type="date" />
+              <input
+                type="date"
+                value={checkIn}
+                onChange={(e) => setCheckIn(e.target.value)}
+              />
             </div>
             <div className="border py-4 px-4 rounded-2xl">
               <label>Check out:</label> <br />
-              <input type="date" />
+              <input
+                type="date"
+                value={checkOut}
+                onChange={(e) => setCheckOut(e.target.value)}
+              />
             </div>
             <div className="border py-4 px-4 rounded-2xl w-28">
               <label>Nymber of guests:</label> <br />
-              <input type="number" placeholder="1" />
+              <input
+                type="number"
+                placeholder="1"
+                value={numberOfGuests}
+                onChange={(e) => setNumberOfGuests(e.target.value)}
+              />
             </div>
-            <button className="primary">Book this place</button>
+            <button className="primary">
+              Book this place
+              {numberOfDays > 0 && <span> €{numberOfDays * place.price}</span>}
+            </button>
           </div>
         </div>
       </div>
