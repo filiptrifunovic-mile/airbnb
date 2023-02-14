@@ -1,7 +1,8 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { differenceInCalendarDays } from "date-fns";
+import { UserContext } from "../UserContext";
 
 const PlacePage = () => {
   const { id } = useParams();
@@ -13,6 +14,14 @@ const PlacePage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [redirect, setRedirect] = useState("");
+
+  const { user } = useContext(UserContext);
+
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+    }
+  }, [user]);
 
   let numberOfDays = 0;
   if (checkIn && checkOut) {
