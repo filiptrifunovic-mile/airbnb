@@ -249,6 +249,10 @@ app.get("/bookings", async (req, res) => {
   res.json(await Booking.find({ user: userData.id }).populate("place"));
 });
 
-app.listen(4000);
+
+if(4000) {
+  app.listen(4000);
+}
+
 
 module.exports = app;
